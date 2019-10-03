@@ -1,8 +1,13 @@
 package cori.community.demo.controller;
 
+import cori.community.demo.dto.QuestionDTO;
+import cori.community.demo.mapper.QuestionMapper;
 import cori.community.demo.mapper.UserMapper;
+import cori.community.demo.model.Question;
 import cori.community.demo.model.User;
+import cori.community.demo.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author 3plus2
@@ -20,10 +26,17 @@ import javax.servlet.http.HttpServletRequest;
 public class HelloController {
 
     @Autowired
-    private UserMapper userMapper;;
+    private UserMapper userMapper;
+
+    @Autowired
+    private QuestionMapper questionMapper;
+
+    @Autowired
+    private  QuestionService questionService;
 
     @GetMapping("/")
-    public String index(HttpServletRequest request){
+    public String index(HttpServletRequest request,
+                        Model model){
         Cookie[] cookies=request.getCookies();
         if (cookies!=null&&cookies.length!=0)
         for (Cookie cookie : cookies) {
@@ -38,6 +51,10 @@ public class HelloController {
                 break;
             }
         }
+
+        List<QuestionDTO> questions= questionService.list();
+        model.addAttribute("questions",questions);
+        System.out.println(questions);
         return "index";
     }
 
