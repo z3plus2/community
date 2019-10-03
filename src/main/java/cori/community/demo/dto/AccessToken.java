@@ -16,8 +16,8 @@ public class AccessToken {
         return client_id;
     }
 
-    public void setClient_id(String clent_id) {
-        this.client_id = clent_id;
+    public void setClient_id(String client_id) {
+        this.client_id = client_id;
     }
 
     public String getClient_secret() {

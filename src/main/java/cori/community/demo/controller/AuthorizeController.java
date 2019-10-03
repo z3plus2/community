@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 /**
@@ -40,26 +42,32 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name="code")String code,
                            @RequestParam(name="state")String state,
-                           HttpServletRequest request){
+                           HttpServletRequest request,
+                           HttpServletResponse response){
         AccessToken accessToken = new AccessToken();
         accessToken.setClient_id(clientId);
         accessToken.setClient_secret(clientSecret);
         accessToken.setCode(code);
         accessToken.setRedirect_uri(redirectUri);
         accessToken.setState(state);
+        //把收到的code post到 https://github.com/login/oauth/access_token
+        //会返回一个access_token=e72e16c7e42f292c6912e7710c838347ae178b4a&token_type=bearer
         String ts=githubProvider.getAccessToken(accessToken);
+        //使用获得的access token去api取得想要的信息
         final GithubUser githubUser = githubProvider.getGithubUser(ts);
         if (githubUser!=null){
             //登陆成功
             User user = new User();
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setToken(UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();
+            user.setToken(token);
             user.setName(githubUser.getName());
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
 
             userMapper.insert(user);
-            request.getSession().setAttribute("user",githubUser);
+            response.addCookie(new Cookie("token",token));
+
             return "redirect:/";
         }else{
             //登陆失败
