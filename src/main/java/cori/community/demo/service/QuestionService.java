@@ -1,5 +1,6 @@
 package cori.community.demo.service;
 
+import cori.community.demo.dto.PaginationDTO;
 import cori.community.demo.dto.QuestionDTO;
 import cori.community.demo.mapper.QuestionMapper;
 import cori.community.demo.mapper.UserMapper;
@@ -25,17 +26,33 @@ public class QuestionService {
     @Autowired
     private UserMapper userMapper;
 
-    public  List<QuestionDTO> list() {
-        List<Question> questions=questionMapper.list();
+    public PaginationDTO list(Integer page, Integer size) {
+
+        Integer totalCount=questionMapper.count();
+
+
+        PaginationDTO paginationDTO=new PaginationDTO();
+        paginationDTO.setPagination(totalCount,page,size);
+
+        if (page<1){
+            page=1;
+        }
+        if (page>paginationDTO.getTotalPage()){
+            page=paginationDTO.getTotalPage();
+        }
+        Integer offset=size*(page-1);
         List<QuestionDTO> questionDTOs=new ArrayList<>();
+        List<Question> questions=questionMapper.list(offset,size);
         for (Question question : questions) {
             User user=userMapper.findById(question.getCreator());
-             QuestionDTO questionDTO = new QuestionDTO();
+            QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
             questionDTOs.add(questionDTO);
 
         }
-        return questionDTOs;
+        paginationDTO.setQuestionDTO(questionDTOs);
+
+        return paginationDTO;
     }
 }

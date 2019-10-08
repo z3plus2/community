@@ -1,5 +1,6 @@
 package cori.community.demo.controller;
 
+import cori.community.demo.dto.PaginationDTO;
 import cori.community.demo.dto.QuestionDTO;
 import cori.community.demo.mapper.QuestionMapper;
 import cori.community.demo.mapper.UserMapper;
@@ -32,29 +33,31 @@ public class HelloController {
     private QuestionMapper questionMapper;
 
     @Autowired
-    private  QuestionService questionService;
+    private QuestionService questionService;
 
     @GetMapping("/")
     public String index(HttpServletRequest request,
-                        Model model){
-        Cookie[] cookies=request.getCookies();
-        if (cookies!=null&&cookies.length!=0)
-        for (Cookie cookie : cookies) {
-            if ("token".equals(cookie.getName())){
-                String token=cookie.getValue();
-                User user=userMapper.findByToken(token);
+                        Model model,
+                        @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "5") Integer size) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null && cookies.length != 0)
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    String token = cookie.getValue();
+                    User user = userMapper.findByToken(token);
 
-                if (user!=null){
+                    if (user != null) {
 
-                    request.getSession().setAttribute("user",user);
+                        request.getSession().setAttribute("user", user);
+                    }
+                    break;
                 }
-                break;
             }
-        }
 
-        List<QuestionDTO> questions= questionService.list();
-        model.addAttribute("questions",questions);
-        System.out.println(questions);
+        PaginationDTO questions = questionService.list(page,size);
+
+        model.addAttribute(questions);
         return "index";
     }
 

@@ -67,7 +67,7 @@
         <div class="col-xs-12 col-md-9 .col-lg-9">
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
             <hr>
-            <div class="media" th:each="question:${questions}">
+            <div class="media" th:each="question:${paginationDTO.questionDTO}">
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object" th:src="${question.user.avatarUrl}" alt="...">
@@ -78,6 +78,34 @@
                     <span class="text-desc"th:text="${question.tag}"></span><span th:text="${#dates.format(question.gmtCreate,'dd MMMM')}"></span>
                 </div>
             </div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li th:if="${paginationDTO.showFirstPage}">
+                        <a  href="/?page=1" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:if="${paginationDTO.showPrevious}">
+                        <a th:href="@{/(page=${paginationDTO.page-1})}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                    <li th:class="${page==paginationDTO.page}? 'active':''" th:each="page:${paginationDTO.pages}">
+                        <a  th:href="@{/(page=${page})}" th:text="${page}">page</a>
+                    </li>
+                    <li th:if="${paginationDTO.showNext}">
+                        <a  th:href="@{/(page=${paginationDTO.page+1})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${paginationDTO.showEndPage}">
+                        <a  th:href="@{/(page=${paginationDTO.totalPage})}"  aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
         <div class="col-xs-6 col-md-3 .col-lg-3">
             <h3>
