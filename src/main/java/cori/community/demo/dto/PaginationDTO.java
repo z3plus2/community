@@ -41,8 +41,6 @@ public class PaginationDTO {
 
         this.page=page;
 
-        System.out.println(totalCount);
-        System.out.println(totalPage);
         pages =new ArrayList<>();
         pages.add(page);
         for (int i = 1, k = 1; i <= 5; i++) {
