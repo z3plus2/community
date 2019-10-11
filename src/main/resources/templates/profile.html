@@ -23,7 +23,7 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <a th:href="@{'/question/'+${question.id}}" ><h4 class="media-heading" th:text="${question.title}"></h4></a>
                     <span class="text-desc"th:text="${question.tag}"></span><span th:text="${#dates.format(question.gmtCreate,'dd MMMM')}"></span>
                 </div>
             </div>

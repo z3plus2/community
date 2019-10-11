@@ -18,12 +18,14 @@
             <hr>
             <div class="media" th:each="question:${paginationDTO.questionDTO}">
                 <div class="media-left">
-                    <a href="#">
+
                         <img class="media-object" th:src="${question.user.avatarUrl}" alt="...">
-                    </a>
+
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <h4 class="media-heading" >
+                        <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}">
+                    </h4>
                     <span class="text-desc"th:text="${question.tag}"></span><span th:text="${#dates.format(question.gmtCreate,'dd MMMM')}"></span>
                 </div>
             </div>

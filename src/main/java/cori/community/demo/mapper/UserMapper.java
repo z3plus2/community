@@ -1,10 +1,7 @@
 package cori.community.demo.mapper;
 
 import cori.community.demo.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 /**
  * @author 3plus2
@@ -21,4 +18,10 @@ public interface UserMapper {
 
     @Select("select * from user where id=#{id}")
     User findById(Integer id);
+
+    @Select("select * from user where account_id=#{id}")
+    User findByAccountId(@Param("id")String id);
+
+    @Update("update  user set name=#{name},token=#{token},gmt_modified=#{gmtModified},avatar_url=#{avatarUrl} where account_id=#{accountId}")
+    void update(User dbUser);
 }
