@@ -2,10 +2,12 @@ package cori.community.demo.service;
 
 import cori.community.demo.mapper.UserMapper;
 import cori.community.demo.model.User;
+import cori.community.demo.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author 3plus2
@@ -19,17 +21,23 @@ public class UserService {
     private UserMapper userMapper;
 
     public  void createOrUpdate(User user) {
-       User dbUser= userMapper.findByAccountId(user.getAccountId());
-       if (dbUser==null){
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andAccountIdEqualTo(user.getAccountId());
+        List<User> users = userMapper.selectByExample(userExample);
+       if (users.size()==0){
+           //没查到时，插入新的
            user.setGmtCreate(System.currentTimeMillis());
            user.setGmtModified(user.getGmtCreate());
            userMapper.insert(user);
        }else {
+           User dbUser = users.get(0);
            dbUser.setGmtModified(System.currentTimeMillis());
            dbUser.setAvatarUrl(user.getAvatarUrl());
            dbUser.setName(user.getName());
            dbUser.setToken(user.getToken());
-           userMapper.update(dbUser);
+           UserExample example = new UserExample();
+           example.createCriteria().andIdEqualTo(dbUser.getId());
+           userMapper.updateByExampleSelective(dbUser, example);
        }
     }
 }

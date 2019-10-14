@@ -1,37 +1,41 @@
 package cori.community.demo.mapper;
 
-import cori.community.demo.dto.QuestionDTO;
 import cori.community.demo.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-
+import cori.community.demo.model.QuestionExample;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
-/**
- * @author 3plus2
- * @data 2019/10/3 15 41
- * @desercription
- */
-@Mapper
 public interface QuestionMapper {
-    @Select("select * from  question limit #{offset},#{size}")
-     List<Question> list(@Param(value = "offset") Integer offset, @Param(value = "size") Integer size) ;
+    long countByExample(QuestionExample example);
 
+    int deleteByExample(QuestionExample example);
 
-    @Insert("insert into question (title,description,gmt_create,gmt_modified,creator,tag) values (#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{tag})")
-    void create(Question question);
+    int deleteByPrimaryKey(Integer id);
 
-    @Select("select count(1) from question")
-    Integer count();
+    int insert(Question record);
 
-    @Select("select * from  question where creator=#{id} limit #{offset},#{size}")
-    List<Question> listById(@Param(value = "id") Integer id, @Param(value = "offset")Integer offset, @Param(value = "size") Integer size);
+    int insertSelective(Question record);
 
-    @Select("select count(1) from question where creator=#{id}")
-    Integer countById(@Param(value = "id")Integer id);
+    List<Question> selectByExampleWithBLOBsWithRowbounds(QuestionExample example, RowBounds rowBounds);
 
-    @Select("select * from  question where id=#{id} ")
-    Question getById(@Param(value = "id")Integer id);
+    List<Question> selectByExampleWithBLOBs(QuestionExample example);
+
+    List<Question> selectByExampleWithRowbounds(QuestionExample example, RowBounds rowBounds);
+
+    List<Question> selectByExample(QuestionExample example);
+
+    Question selectByPrimaryKey(Integer id);
+
+    int updateByExampleSelective(@Param("record") Question record, @Param("example") QuestionExample example);
+
+    int updateByExampleWithBLOBs(@Param("record") Question record, @Param("example") QuestionExample example);
+
+    int updateByExample(@Param("record") Question record, @Param("example") QuestionExample example);
+
+    int updateByPrimaryKeySelective(Question record);
+
+    int updateByPrimaryKeyWithBLOBs(Question record);
+
+    int updateByPrimaryKey(Question record);
 }
