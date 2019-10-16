@@ -37,3 +37,5 @@ For example:
     </jdbcConnection>
     
 #第十天
+错误处理
+阅读数功能，反向工程的基础，自建一个手工mapper，注解开发需要的sql
