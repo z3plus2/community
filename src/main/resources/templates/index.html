@@ -26,7 +26,7 @@
                     <h4 class="media-heading" >
                         <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}">
                     </h4>
-                    <span class="text-desc"th:text="${question.tag}"></span><span th:text="${#dates.format(question.gmtCreate,'dd MMMM')}"></span>
+                    <span class="text-desc"th:text="${question.viewCount}"></span><span>次浏览</span></span><span class="text-desc"th:text="${question.tag}"></span><span th:text="${#dates.format(question.gmtCreate,'dd MMMM')}"></span>
                 </div>
             </div>
             <nav aria-label="Page navigation">

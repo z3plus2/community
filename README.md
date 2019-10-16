@@ -35,3 +35,5 @@ For example:
             userId="my_user" password="my_password">
         <property name="nullCatalogMeansCurrent" value=true" />
     </jdbcConnection>
+    
+#第十天

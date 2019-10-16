@@ -15,7 +15,8 @@
     <div class="row">
         <div class="col-xs-12 col-md-9 .col-lg-9">
             <h3><span th:text="${question.title}"></span></h3>
-            <span class="text-desc"th:text="${question.tag}"></span><span th:text="${#dates.format(question.gmtCreate,'dd MMMM')}"></span>
+            <span class="text-desc"th:text="${question.viewCount}"></span><span>次浏览</span></span><span class="text-desc"th:text="${question.tag}"></span><span th:text="${#dates.format(question.gmtCreate,'dd MMMM')}"></span>
+
             <hr>
             <h5>
                 <div  th:text="${question.description}"></div>

@@ -2,6 +2,9 @@ package cori.community.demo.service;
 
 import cori.community.demo.dto.PaginationDTO;
 import cori.community.demo.dto.QuestionDTO;
+import cori.community.demo.exception.CustiomizeException;
+import cori.community.demo.exception.CustomizeErrorCode;
+import cori.community.demo.mapper.QuestionExtMapper;
 import cori.community.demo.mapper.QuestionMapper;
 import cori.community.demo.mapper.UserMapper;
 import cori.community.demo.model.Question;
@@ -28,6 +31,9 @@ public class QuestionService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
 
@@ -100,6 +106,9 @@ public class QuestionService {
 
     public QuestionDTO getById(Integer id) {
         Question question=questionMapper.selectByPrimaryKey(id);
+        if (question==null){
+            throw new CustiomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO=new QuestionDTO();
         User user=userMapper.selectByPrimaryKey(question.getCreator());
         BeanUtils.copyProperties(question,questionDTO);
@@ -116,7 +125,14 @@ public class QuestionService {
             question.setGmtModified(System.currentTimeMillis());
             QuestionExample example = new QuestionExample();
             example.createCriteria().andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(question, example);
+            int update=questionMapper.updateByExampleSelective(question, example);
+            if (update!=1){
+                throw new CustiomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
+    }
+
+    public void addViewCount(Integer id) {
+        questionExtMapper.addViewCount(id);
     }
 }
