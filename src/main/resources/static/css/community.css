@@ -11,3 +11,17 @@
     font-weight: normal;
     color: #999;
 }
+.media-body{
+    padding-top: 10px;
+}
+.btn-comment{
+    float: right;
+    margin: 10px;
+}
+
+.icon{
+    cursor:pointer ;
+}
+.icon:hover{
+    color: #2aabd2;
+}

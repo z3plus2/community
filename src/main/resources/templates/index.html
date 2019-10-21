@@ -9,6 +9,15 @@
     <script src="js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/community.css">
 </head>
+<script type="application/javascript">
+    window.onload = function () {
+        var closable = window.localStorage.getItem("closable");
+        if (closable == "true") {
+            window.close();
+            window.localStorage.removeItem("closable");
+        }
+    }
+</script>
 <body>
 <div th:insert="navigation::nav"></div>
 <div class="container-fluid main">
@@ -19,20 +28,22 @@
             <div class="media" th:each="question:${paginationDTO.questionDTO}">
                 <div class="media-left">
 
-                        <img class="media-object" th:src="${question.user.avatarUrl}" alt="...">
+                    <img class="media-object" th:src="${question.user.avatarUrl}" alt="...">
 
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" >
+                    <h4 class="media-heading">
                         <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}">
                     </h4>
-                    <span class="text-desc"th:text="${question.viewCount}"></span><span>次浏览</span></span><span class="text-desc"th:text="${question.tag}"></span><span th:text="${#dates.format(question.gmtCreate,'dd MMMM')}"></span>
+                    <span class="text-desc" th:text="${question.viewCount}"></span><span>次浏览</span></span><span
+                        class="text-desc" th:text="${question.tag}"></span><span
+                        th:text="${#dates.format(question.gmtCreate,'dd MMMM')}"></span>
                 </div>
             </div>
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li th:if="${paginationDTO.showFirstPage}">
-                        <a  href="/?page=1" aria-label="Previous">
+                        <a href="/?page=1" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -42,16 +53,16 @@
                         </a>
                     </li>
                     <li th:class="${page==paginationDTO.page}? 'active':''" th:each="page:${paginationDTO.pages}">
-                        <a  th:href="@{/(page=${page})}" th:text="${page}">page</a>
+                        <a th:href="@{/(page=${page})}" th:text="${page}">page</a>
                     </li>
                     <li th:if="${paginationDTO.showNext}">
-                        <a  th:href="@{/(page=${paginationDTO.page+1})}" aria-label="Next">
+                        <a th:href="@{/(page=${paginationDTO.page+1})}" aria-label="Next">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
 
                     <li th:if="${paginationDTO.showEndPage}">
-                        <a  th:href="@{/(page=${paginationDTO.totalPage})}"  aria-label="Next">
+                        <a th:href="@{/(page=${paginationDTO.totalPage})}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

@@ -6,7 +6,6 @@ package cori.community.demo.exception;
  * @desercription
  */
 public interface ICustomizeErrorCode {
-    default String getMessage() {
-        return null;
-    }
+     String getMessage() ;
+     Integer getCode();
 }
