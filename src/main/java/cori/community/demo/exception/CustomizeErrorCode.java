@@ -11,7 +11,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
 //查找不到
     QUESTION_NOT_FOUND(2001,"你找的问题不存在了"),
     TARGET_NOT_FOUND(2002,"未选中问题或者评论，无法评论"),
-    NO_LOGIN(2003,"未登录");
+    NO_LOGIN(2003,"未登录"),
+    NO_COMMENT(2004,"输入不能为空");
 
     private String message;
     private Integer code;

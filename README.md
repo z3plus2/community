@@ -43,3 +43,6 @@ For example:
 #第十一二天
 增加评论功能，AJAX方式增加评论
 MBG自动生成的语句，默认只有基本项，blob是text之类的项，查询时注意
+
+#第十三天
+增加最热主题功能，利用https://spring.io/guides/gs/scheduling-tasks/

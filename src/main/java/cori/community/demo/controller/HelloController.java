@@ -1,8 +1,10 @@
 package cori.community.demo.controller;
 
+import cori.community.demo.cach.QuestionsHot;
 import cori.community.demo.dto.PaginationDTO;
 import cori.community.demo.mapper.QuestionMapper;
 import cori.community.demo.mapper.UserMapper;
+import cori.community.demo.model.Question;
 import cori.community.demo.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.PriorityQueue;
 
 /**
  * @author 3plus2
@@ -28,6 +31,8 @@ public class HelloController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private QuestionsHot questionsHot;
 
     @GetMapping("/")
     public String index(HttpServletRequest request,
@@ -38,7 +43,10 @@ public class HelloController {
 
         PaginationDTO questions = questionService.list(page,size);
 
-        model.addAttribute(questions);
+        model.addAttribute("paginationDTO",questions);
+
+        PriorityQueue<Question> questionHotList=  questionsHot.getQuestionsHot();
+        model.addAttribute("questionHot",questionHotList);
         return "index";
     }
 

@@ -42,6 +42,7 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li th:unless="${session.user!=null}"><a href="https://github.com/login/oauth/authorize?client_id=9ccc1ea197799a82f22a&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登陆</a></li>
+                    <li th:unless="${session.user!=null}"><a th:href="@{ https://github.com/login/oauth/authorize(client_id='9ccc1ea197799a82f22a',redirect_uri=${#httpServletRequest.getRequestURL()},scope='user',state=1) }" >登陆</a></li>
                     <li th:if="${session.user!=null}" class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
                             <span  th:text="${session.user.getName()}"></span>

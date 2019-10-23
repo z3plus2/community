@@ -12,6 +12,7 @@ function post() {
         }),
         success: function (response) {
             if (response.code == 200) {
+                window.location.reload();
 
             } else {
                 if (response.code == 2003) {

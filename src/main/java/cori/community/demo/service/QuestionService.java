@@ -53,8 +53,9 @@ public class QuestionService {
         List<QuestionDTO> questionDTOs=new ArrayList<>();
 
 
-
-        List<Question> questions=questionMapper.selectByExampleWithRowbounds(new QuestionExample(),new RowBounds(offset,size));
+        QuestionExample example = new QuestionExample();
+        example.setOrderByClause("gmt_modified desc");
+        List<Question> questions= questionMapper.selectByExampleWithRowbounds(example,new RowBounds(offset,size));
         for (Question question : questions) {
             User user=userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
@@ -72,6 +73,7 @@ public class QuestionService {
     public PaginationDTO list(Integer id, Integer page, Integer size) {
         QuestionExample example = new QuestionExample();
         example.createCriteria().andCreatorEqualTo(id);
+        example.setOrderByClause("gmt_modified desc");
         Integer totalCount=(int)questionMapper.countByExample(example);
 
 
@@ -120,6 +122,8 @@ public class QuestionService {
         if(question.getId()==null){
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setCommentCount(0);
+            question.setViewCount(0);
             questionMapper.insert(question);
         }else{
             question.setGmtModified(System.currentTimeMillis());
@@ -134,5 +138,15 @@ public class QuestionService {
 
     public void addViewCount(Integer id) {
         questionExtMapper.addViewCount(id);
+    }
+
+    public Integer countAllQustion() {
+        return Math.toIntExact(questionMapper.countByExample(new QuestionExample()));
+    }
+
+    public List<Question> hotList(Integer offset, Integer size) {
+        QuestionExample example = new QuestionExample();
+        List<Question> questions= questionMapper.selectByExampleWithRowbounds(example,new RowBounds(offset,size));
+        return questions;
     }
 }

@@ -76,6 +76,18 @@
             提出问题，标题简洁，不要超过25字
             内容尽量详细。
         </div>
+        <h2>热门问题</h2>
+        <div class="media" th:each="question:${questionHot}">
+
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}">
+                </h4>
+                <span class="text-desc" th:text="${question.viewCount}"></span><span>次浏览</span></span><span
+                    class="text-desc" th:text="${question.tag}"></span><span
+                    th:text="${#dates.format(question.gmtCreate,'dd MMMM')}"></span>
+            </div>
+        </div>
     </div>
 </div>
 </body>

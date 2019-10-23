@@ -31,12 +31,12 @@
 
             <div class="media-left">
 
-                <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" alt="...">
+                <img class="media-object img-rounded" th:src="${session.user!=null?session.user.avatarUrl:''}" alt="...">
 
             </div>
             <div class="media-body">
                 <h4 class="media-heading">
-                    <span class="text-desc" th:text="${question.user.name}"></span>
+                    <span class="text-desc" th:text="${session.user!=null?session.user.name:'默认'}"></span>
 
                 </h4>
             </div>
